@@ -9,21 +9,38 @@ def crear_cuenta():
     cuenta_clientes.append(nueva_cuenta)
     print("Cuenta creada exitosamente.\n")
 
-def opcion_depositar_dinero():
+def guardar_numero_cuenta():
+    return int(input("Ingresa el número de cuenta: "))
+
+def buscar_cuenta(numero_cuenta):
+    for cuenta in cuenta_clientes:
+        if cuenta.numero_cuenta == numero_cuenta:
+            return cuenta
+    return None
+
+def opcion_depositar_dinero(numero_cuenta):
+    cuenta = buscar_cuenta(numero_cuenta)
     if cuenta_clientes:
-        dinero = UI.solicitar_dinero()
-        cuenta_clientes[0].depositar_dinero(dinero)  
-        print("Depósito realizado con éxito.\n")
+        if cuenta:
+            dinero = UI.solicitar_dinero()
+            cuenta.depositar_dinero(dinero)  
+            print("Depósito realizado con éxito.\n")
+        else:
+            print("Cuenta inexistente.")
     else:
         print("No hay cuentas registradas.")
 
-def opcion_retirar_dinero():
+def opcion_retirar_dinero(numero_cuenta):
+    cuenta = buscar_cuenta(numero_cuenta)
     if cuenta_clientes:
-        dinero = UI.solicitar_dinero()
-        cuenta_clientes[0].retirar_dinero(dinero)  
-        print("Retiro realizado con éxito.")
+        if cuenta:
+            dinero = UI.solicitar_dinero()
+            cuenta.retirar_dinero(dinero)  
+            print("Retiro realizado con éxito.\n")
+        else:
+            print("Cuenta inexistente.")
     else:
-        print("No hay cuentas registradas.\n")
+        print("No hay cuentas registradas.")
 
 
 while True:
@@ -34,10 +51,10 @@ while True:
         crear_cuenta()
         
     elif opcion == 2:
-        opcion_depositar_dinero()
+        opcion_depositar_dinero(guardar_numero_cuenta())
         
     elif opcion == 3:
-        opcion_retirar_dinero()
+        opcion_retirar_dinero(guardar_numero_cuenta())
         
     elif opcion == 4:
         UI.mostrar_cuentas(cuenta_clientes)
